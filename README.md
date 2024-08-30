@@ -2,7 +2,9 @@
 A script to take single image files and make rotating image matrices from them.
 
 ## Problem
-Propresenter outputs a set of images (announcement slides) titled 1.jpg 2.jpg to n.jpg.  But the mac mini in the corner needs 1 long images to run three announcement screens.  What to do?  This script.  
+Propresenter outputs a set of images (announcement slides) titled 1.jpg 2.jpg to n.jpg.  
+But the mac mini in the corner needs 1 looong images to display on three seperate announcement screens.  
+What to do?  This script.  
 
 ./stitch.sh 3x1 input/ output/
 
@@ -10,9 +12,10 @@ Takes the, say 20, images from the input directory (from propresenter) and makes
 * 1,2,3 
 * 2,3,4 
 * ...
-* n-2,n-1,n or 18,19,20
-* n-1,n,1 or 19,20,1
-* n,1,2 or 20,1,2
+* 18,19,20
+* 19,20,1
+* 20,1,2
+  
 So that these can be displayed, one by one and every image gets equal screen time...
 
 now add in some otpions and other matrix sizes all wrapped within bashews skeleton, and you get this program!
