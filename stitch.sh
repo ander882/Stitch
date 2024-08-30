@@ -8,11 +8,11 @@
 
 ### Created by ander882 ( ander882 ) on 2024-08-21
 ### Based on https://github.com/pforret/bashew 1.21.2
-script_version="0.0.1" # if there is a VERSION.md in this script's folder, that will have priority over this version number
-readonly script_author="ander882@hotmail.com"
-readonly script_created="2024-08-21"
+script_version="1.0.0" # if there is a VERSION.md in this script's folder, that will have priority over this version number
+readonly script_author="ander882"
+readonly script_created="2024-08-30"
 readonly run_as_root=-1 # run_as_root: 0 = don't check anything / 1 = script MUST run as root / -1 = script MAY NOT run as root
-readonly script_description="stitch together images"
+readonly script_description="Stitch together images"
 
 function Option:config() {
   ### Change the next lines to reflect which flags/options/parameters you need
