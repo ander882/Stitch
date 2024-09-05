@@ -8,9 +8,9 @@
 
 ### Created by ander882 ( ander882 ) on 2024-08-21
 ### Based on https://github.com/pforret/bashew 1.21.2
-script_version="1.0.0" # if there is a VERSION.md in this script's folder, that will have priority over this version number
+script_version="1.0.1" # if there is a VERSION.md in this script's folder, that will have priority over this version number
 readonly script_author="ander882"
-readonly script_created="2024-08-30"
+readonly script_created="2024-09-05"
 readonly run_as_root=-1 # run_as_root: 0 = don't check anything / 1 = script MUST run as root / -1 = script MAY NOT run as root
 readonly script_description="Stitch together images"
 
@@ -44,9 +44,9 @@ flag|Q|QUIET|no output
 flag|V|VERBOSE|also show debug messages
 #flag|f|FORCE|do not ask for confirmation (always yes)
 flag|c|cleanup|clean the output folder first
+flag|w|wait|check every 3 seconds for all images to load in first
 flag|r|reverse|reverse the direction images move
 option|L|LOG_DIR|folder for log files |$HOME/log/$script_prefix
-#option|T|TMP_DIR|folder for temp files|/tmp/$script_prefix
 #option|W|WIDTH|width of the picture|800
 param|1|msize|matrix size of images.  ie [rows]x[cols]|text
 param|1|input_dir|input directory of images/text
@@ -88,16 +88,34 @@ function Script:main() {
   ########
   ##  Check the input directory
   ########
-  #TIP: Any type of file can be contained in the input directory
+  #TIP:  Any type of file can be contained in the input directory
   #TIP:> Only *.png *.jpg *.jpeg file are taken
   #TIP:> Even though images can have different height/width
   #TIP:> it is better when images have the same height/width
+
+  #TIP: If this script is triggered by the first of many images loading in,
+  #TIP:> you may want to use the '-w' option to have this script check
+  #TIP:> every 3 seconds until no more new images arive in before continuing
   [[ ! -d "$input_dir" ]] && die "Post folder [$input_dir] not found" 
+
+  last_pics=0
   shopt -s nullglob
-  arr=(${input_dir}*.png)
-  arr+=(${input_dir}*.jpg)
-  arr+=(${input_dir}*.jpeg)
-  total_pics=${#arr[@]}
+
+  while : ; do
+
+    arr=(${input_dir}*.png)
+    arr+=(${input_dir}*.jpg)
+    arr+=(${input_dir}*.jpeg)
+    total_pics=${#arr[@]}
+
+    [[ $wait == 0 || ${last_pics} == ${total_pics} ]]  && break
+
+    IO:announce "Waiting for more pictures"
+    sleep 3
+    last_pics=${total_pics}
+
+  done
+
   [[ ${total_pics} -lt ${matrix_size} ]] && IO:die "Not enough pictures"
   IO:announce "${total_pics} pictures found"
 
