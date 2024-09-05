@@ -20,7 +20,7 @@ So that these can be displayed, one by one and every image gets equal screen tim
 
 now add in some otpions and other matrix sizes all wrapped within bashews skeleton, and you get this program!
 
-'''
+```
 $ ./stitch.sh -h
 Program : stitch.sh  by ander882
 Version : v1.0.0 (2024-08-30 12:14)
@@ -51,4 +51,9 @@ Flags, options and parameters:
 * Images will normally rotate to the left and up
   use the -r option to have images rotate to the right and down
 
-'''
+```
+
+## What is it again?
+
+This script is a wrapper for imagemagick's montage command.  More about this tool can be found at https://legacy.imagemagick.org/Usage/montage/
+
