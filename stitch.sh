@@ -8,9 +8,9 @@
 
 ### Created by ander882 ( ander882 ) on 2024-08-21
 ### Based on https://github.com/pforret/bashew 1.21.2
-script_version="1.0.1" # if there is a VERSION.md in this script's folder, that will have priority over this version number
+script_version="1.0.2" # if there is a VERSION.md in this script's folder, that will have priority over this version number
 readonly script_author="ander882"
-readonly script_created="2024-09-05"
+readonly script_created="2024-09-12"
 readonly run_as_root=-1 # run_as_root: 0 = don't check anything / 1 = script MUST run as root / -1 = script MAY NOT run as root
 readonly script_description="Stitch together images"
 
@@ -129,7 +129,8 @@ function Script:main() {
   [[ ! -d "$output_dir" ]] && mkdir -p "$output_dir"
   if [[ $cleanup == 1 ]] ; then
      IO:announce "Clean up folder [$output_dir]" 
-     find "$output_dir" -type f -exec rm {} \;
+     # remove all .jpg files except 1 and 2.  these will be replaced.
+     find "$output_dir" ! -name '1.jpg' ! -name '2.jpg' -type f -name "*.jpg" -exec rm {} \;
   fi
 
 
@@ -140,20 +141,21 @@ function Script:main() {
   ##  Lets make some images
   ########
   IO:announce "Making images"
-  arr+=( "${arr[@]:0:${matrix_size}-1}" )
+  arr+=( "${arr[@]:0:${matrix_size}}" )
 
   # iterate through array using a counter
   for ((i2=0; i2<${total_pics}; i2++)); do
 
     if [[ $reverse == 1 ]] ; then
-	i=${total_pics}-1-$i2
+	i=${total_pics}-$i2
     else
 	i=$i2
     fi
+    fn=$((i2+1))
 
     #  Yeah!  The actual magic
     montage -geometry +0+0 -tile $msize \
-      ${arr[@]:$i:$matrix_size} ${output_dir}/$i2.jpg
+      ${arr[@]:$i:$matrix_size} ${output_dir}/${fn}.jpg
 
     IO:progress 
 
@@ -292,12 +294,12 @@ function IO:progress() {
     local screen_width
     screen_width=$(tput cols 2>/dev/null || echo 80)
     local rest_of_line
-    rest_of_line=$((screen_width - 5))
+    rest_of_line=$((screen_width - 7))
 
     if ((piped)); then
       IO:print "... $*" >&2
     else
-      printf "... %-${rest_of_line}b\r" "$*                                             " >&2
+      printf "... ${i2}%-${rest_of_line}b\r" "$*                                             " >&2
     fi
   )
 }
