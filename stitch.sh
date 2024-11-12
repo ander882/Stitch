@@ -98,14 +98,16 @@ function Script:main() {
   #TIP:> every 3 seconds until no more new images arive in before continuing
   [[ ! -d "$input_dir" ]] && die "Post folder [$input_dir] not found" 
 
-  last_pics=0
+  ########
+  ##  Lets get some files to use
+  ########
+  last_pics=0  #The number of pictres we saw last time
   shopt -s nullglob
 
-  while : ; do
-
-    arr=(${input_dir}*.png)
-    arr+=(${input_dir}*.jpg)
-    arr+=(${input_dir}*.jpeg)
+  while : ; do    
+    # use find to get newest file.
+    # use sort to put the files numerically
+    arr=($(find ${input_dir}*jpeg -maxdepth 1 -type f -cmin -5 |sort -V))
     total_pics=${#arr[@]}
 
     [[ $wait == 0 || ${last_pics} == ${total_pics} ]]  && break
