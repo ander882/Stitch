@@ -8,7 +8,7 @@
 
 ### Created by ander882 ( ander882 ) on 2024-08-21
 ### Based on https://github.com/pforret/bashew 1.21.2
-script_version="1.0.2" # if there is a VERSION.md in this script's folder, that will have priority over this version number
+script_version="1.1.0" # if there is a VERSION.md in this script's folder, that will have priority over this version number
 readonly script_author="ander882"
 readonly script_created="2024-09-12"
 readonly run_as_root=-1 # run_as_root: 0 = don't check anything / 1 = script MUST run as root / -1 = script MAY NOT run as root
@@ -46,11 +46,12 @@ flag|V|VERBOSE|also show debug messages
 flag|c|cleanup|clean the output folder first
 flag|w|wait|check every 3 seconds for all images to load in first
 flag|r|reverse|reverse the direction images move
+flag|3|timed|Images less than 3 minutes old only
 option|L|LOG_DIR|folder for log files |$HOME/log/$script_prefix
 #option|W|WIDTH|width of the picture|800
 param|1|msize|matrix size of images.  ie [rows]x[cols]|text
-param|1|input_dir|input directory of images/text
-param|1|output_dir|output directory for stitched images/text
+param|1|input_dir|input directory of images
+param|1|output_dir|output directory for stitched images
 " -v -e '^#' -e '^\s*$'
 }
 
@@ -107,7 +108,11 @@ function Script:main() {
   while : ; do    
     # use find to get newest file.
     # use sort to put the files numerically
-    arr=($(find ${input_dir}*jpeg -maxdepth 1 -type f -cmin -5 |sort -V))
+    if [[ $timed == 1 ]] ; then
+      arr=($(find ${input_dir}*jpeg -maxdepth 1 -type f -cmin -3 | sort -V))
+    else
+      arr=($(find ${input_dir}*jpeg -maxdepth 1 -type f | sort -V))
+    fi
     total_pics=${#arr[@]}
 
     [[ $wait == 0 || ${last_pics} == ${total_pics} ]]  && break
