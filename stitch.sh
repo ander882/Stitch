@@ -10,7 +10,7 @@
 ### Based on https://github.com/pforret/bashew 1.21.2
 script_version="1.1.0" # if there is a VERSION.md in this script's folder, that will have priority over this version number
 readonly script_author="ander882"
-readonly script_created="2024-09-12"
+readonly script_created="2024-10-18"
 readonly run_as_root=-1 # run_as_root: 0 = don't check anything / 1 = script MUST run as root / -1 = script MAY NOT run as root
 readonly script_description="Stitch together images"
 
