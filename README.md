@@ -1,14 +1,14 @@
 # Stitch
-A script to take single image files and make rotating image matrices from them.
+A script to take a group of single image files and make rotating image matrices from them.
 
 ## Problem
 Propresenter outputs a set of images (announcement slides) titled 1.jpg 2.jpg to n.jpg.  
-But the mac mini in the corner needs 1 looong images to display on three seperate announcement screens.  
+But the mac mini in the corner wants triple wide images to display 3 images on three seperate announcement screens.  
 What to do?  This script.  
 
 ./stitch.sh 3x1 input/ output/
 
-Takes the, say 20, images from the input directory (from propresenter) and makes 20 sets of images that have 3 pics in them like this:
+Takes the, say 20, images from the input/ directory (from propresenter) and makes 20 triple wide images from them.  Each image has 3 pics in them like this:
 * 1,2,3 
 * 2,3,4 
 * ...
@@ -23,19 +23,22 @@ now add in some otpions and other matrix sizes all wrapped within bashews skelet
 ```
 $ ./stitch.sh -h
 Program : stitch.sh  by ander882
-Version : v1.0.0 (2024-08-30 12:14)
+Version : v1.1.0 (2024-11-18 12:39)
 Purpose : Stitch together images
-Usage   : stitch.sh [-h] [-Q] [-V] [-c] [-r] [-L <LOG_DIR>] <msize> <input_dir> <output_dir>
+Usage   : stitch.sh [-h] [-Q] [-V] [-c] [-w] [-r] [-3] [-L <LOG_DIR>] <msize> <input_dir> <output_dir>
 Flags, options and parameters:
     -h|--help        : [flag] show usage [default: off]
     -Q|--QUIET       : [flag] no output [default: off]
     -V|--VERBOSE     : [flag] also show debug messages [default: off]
     -c|--cleanup     : [flag] clean the output folder first [default: off]
+    -w|--wait        : [flag] check every 3 seconds for all images to load in first [default: off]
     -r|--reverse     : [flag] reverse the direction images move [default: off]
+    -3|--timed       : [flag] Images less than 3 minutes old only [default: off]
     -L|--LOG_DIR <?> : [option] folder for log files   [default: /home/ander882/log/stitch]
     <msize>          : [parameter] matrix size of images.  ie [rows]x[cols]
-    <input_dir>      : [parameter] input directory of images/text
-    <output_dir>     : [parameter] output directory for stitched images/text
+    <input_dir>      : [parameter] input directory of images
+    <output_dir>     : [parameter] output directory for stitched images
+
                                                                                              
 ### TIPS & EXAMPLES
 * [cols]x[rows] mean the number of colums/rows in the stithed together image
