@@ -131,13 +131,18 @@ function Script:main() {
   ########
   ##  Check the output directory
   ########
-  #TIP: Files named 1.jpg 2.jpg up to n.jpg will be overwritten!
-  #TIP:> It may be better to use the -c option to clean out the entire output directory
   [[ ! -d "$output_dir" ]] && mkdir -p "$output_dir"
+
+  ########
+  ##  Remove files if asked for
+  ########
+  #TIP:> It may be better to use the -c option to clean out the entire output directory
+  #TIP: Files named 1.jpg 2.jpg will be overwritten!
+  #TIP: Files named 3.jpg 4.jpg to n.jpg will be deleted!
   if [[ $cleanup == 1 ]] ; then
      IO:announce "Clean up folder [$output_dir]" 
      # remove all .jpg files except 1 and 2.  these will be replaced.
-     find "$output_dir" ! -name '1.jpg' ! -name '2.jpg' -type f -name "*.jpg" -exec rm {} \;
+     find "$output_dir" ! -name '1.jpg' ! -name '2.jpg' -type f -name "[[:digit:]]*.jpg" -exec rm {} \;
   fi
 
 
